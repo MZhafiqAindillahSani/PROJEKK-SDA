@@ -1,0 +1,50 @@
+import tkinter as tk
+from tkinter import Toplevel
+from PIL import Image, ImageTk
+
+def buka_halaman_utama():
+    halaman_utama = Toplevel(root)
+    halaman_utama.title("Halaman Utama")
+    halaman_utama.geometry(f"{screen_width}x{screen_height}")
+    halaman_utama.configure(bg="#1a1a1a")
+    
+    label = tk.Label(halaman_utama, text="Ini Halaman Utama", font=("Courier", 28, "bold"), fg="white", bg="#1a1a1a")
+    label.pack(pady=100)
+
+def on_enter(e):
+    mulai_btn.config(bg="#ff66cc", fg="white")
+
+def on_leave(e):
+    mulai_btn.config(bg="#ffffff", fg="#333333")
+
+
+root = tk.Tk()
+root.title("Pixel Welcome Screen")
+
+
+screen_width = root.winfo_screenwidth()
+screen_height = root.winfo_screenheight()
+root.geometry(f"{screen_width}x{screen_height}")
+root.resizable(False, False)
+
+
+image_path = "IMG_4694.PNG"
+bg_image = Image.open(image_path).resize((screen_width, screen_height), Image.Resampling.LANCZOS)
+bg_photo = ImageTk.PhotoImage(bg_image)
+
+
+canvas = tk.Canvas(root, width=screen_width, height=screen_height, highlightthickness=0)
+canvas.pack(fill="both", expand=True)
+canvas.create_image(0, 0, image=bg_photo, anchor="nw")
+
+
+mulai_btn = tk.Button(root, text="Mulai", font=("Courier", 20, "bold"), bg="#ffffff", fg="#333333",
+                      activebackground="#ff66cc", activeforeground="white", borderwidth=0,
+                      command=buka_halaman_utama)
+canvas.create_window(screen_width//2, screen_height//2 + 150, window=mulai_btn, width=200, height=50)
+
+
+mulai_btn.bind("<Enter>", on_enter)
+mulai_btn.bind("<Leave>", on_leave)
+
+root.mainloop()
